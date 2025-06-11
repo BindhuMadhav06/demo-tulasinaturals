@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<h2 class="text-2xl font-bold mb-4">Your Cart</h2>
+
+{% if cart %}
+<ul class="mb-6">
+    {% for item in cart %}
+    <li class="mb-2 border-b pb-2">
+        {{ item.name }} - ₹{{ item.price }}
+    </li>
+    {% endfor %}
+</ul>
+
+<form method="POST" action="/place_order" class="space-y-4">
+    <label class="block text-lg font-semibold">Select Payment Method:</label>
+    <label><input type="radio" name="payment" value="Cash on Delivery" checked> Cash on Delivery</label><br>
+    <label><input type="radio" name="payment" value="UPI"> UPI</label><br>
+    <button type="submit" class="bg-green-700 text-white px-6 py-2 rounded hover:bg-green-800">
+        ✅ Place Order
+    </button>
+</form>
+
+{% else %}
+<p>Your cart is empty 🛒</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="text-center mt-20">
+    <h2 class="text-4xl font-bold mb-4 text-green-700">Welcome to Tulasi Naturals 🌿</h2>
+    <p class="text-lg text-gray-700 mb-8">
+        Explore our range of 100% natural herbal products. Stay healthy the Ayurvedic way!
+    </p>
+    <a href="/products" class="inline-block bg-green-600 text-white px-6 py-3 rounded-full text-lg font-semibold hover:bg-green-700 transition duration-300">
+        🌱 Shop Products
+    </a>
+</div>
+
+<!-- Optional hero section -->
+<div class="mt-16">
+    <img src="{{ url_for('static', filename='banner.jpg') }}" alt="Banner" style="width: 100%; border-radius: 10px;">
+</div>
+{% endblock %}

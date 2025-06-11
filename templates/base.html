@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tulasi Naturals</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-green-50 text-gray-800">
+    <nav class="bg-green-600 text-white px-6 py-4 flex justify-between items-center">
+        <div class="flex items-center space-x-4">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="h-10 w-10 rounded-full bg-white p-1">
+            <h1 class="text-xl font-bold">Tulasi Naturals</h1>
+        </div>
+        <div class="space-x-4">
+            <a href="/" class="hover:underline">Home</a>
+            <a href="/products" class="hover:underline">Products</a>
+            <a href="/cart" class="hover:underline">Cart</a>
+        </div>
+    </nav>
+    <main class="p-6 max-w-7xl mx-auto">
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>
