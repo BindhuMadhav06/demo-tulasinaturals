@@ -1,18 +1,132 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="text-center mt-20">
-    <h2 class="text-4xl font-bold mb-4 text-green-700">Welcome to Tulasi Naturals 🌿</h2>
-    <p class="text-lg text-gray-700 mb-8">
-        Explore our range of 100% natural herbal products. Stay healthy the Ayurvedic way!
-    </p>
-    <a href="/products" class="inline-block bg-green-600 text-white px-6 py-3 rounded-full text-lg font-semibold hover:bg-green-700 transition duration-300">
-        🌱 Shop Products
-    </a>
+<!-- 🌿 Welcome Section -->
+<div class="text-center mt-20 px-4">
+  <h2 class="text-4xl font-bold mb-4 text-green-700">Welcome to Tulasi Naturals 🌿</h2>
+  <p class="text-lg text-gray-700 mb-8">
+    Explore our range of 100% natural herbal products. Stay healthy in the Ayurvedic way!
+  </p>
+  <a href="/products"
+     class="inline-block bg-green-600 text-white px-6 py-3 rounded-full text-lg font-semibold hover:bg-green-700 transition duration-300">
+    🌱 Shop Products
+  </a>
 </div>
 
-<!-- Optional hero section -->
-<div class="mt-16">
-    <img src="{{ url_for('static', filename='banner.jpg') }}" alt="Banner" style="width: 100%; border-radius: 10px;">
+<!-- 🔁 Hero Slider -->
+<div class="relative w-full max-w-4xl mx-auto overflow-hidden rounded-xl shadow-xl mt-16 max-h-[450px]">
+  <div id="heroSlider" class="flex transition-transform duration-1000 ease-in-out w-[500%] h-full">
+    {% for i in range(1, 6) %}
+    <img src="{{ url_for('static', filename='slide' ~ i ~ '.jpg') }}"
+         class="w-[20%] h-full object-cover flex-shrink-0" />
+    {% endfor %}
+  </div>
+  <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-10">
+    {% for i in range(5) %}
+    <button class="hero-dot w-3 h-3 rounded-full bg-white opacity-70 hover:opacity-100 transition"
+            onclick="goToHeroSlide({{ i }})"></button>
+    {% endfor %}
+  </div>
 </div>
+
+<!-- 🌟 Featured Products -->
+<section class="bg-green-50 py-10 px-4">
+  <h2 class="text-2xl md:text-3xl font-bold text-green-700 text-center mb-6">🌿 Featured Products</h2>
+  <div class="grid grid-cols-3 gap-4 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-5">
+    {% for product in products[:15] %}
+    <div class="bg-white rounded-2xl shadow hover:shadow-lg overflow-hidden transition duration-300 flex flex-col">
+      <img src="{{ product.img }}"
+           alt="{{ product.name }}"
+           class="w-full h-28 sm:h-32 object-cover cursor-pointer"
+           onclick="showImageModal('{{ product.img }}')">
+      <div class="p-3 flex flex-col justify-between flex-grow">
+        <div>
+          <h3 class="text-sm font-semibold text-green-900 truncate">{{ product.name }}</h3>
+          <p class="text-xs text-gray-600 mt-1 truncate">{{ product.description[:50] }}...</p>
+        </div>
+        <div class="flex justify-between items-center mt-3">
+          <span class="text-green-700 font-bold text-sm">₹{{ product.price }}</span>
+          <button onclick="showDetails('{{ product.name }}', `{{ product.description }}`, '{{ product.price }}', '{{ product.img }}')"
+                  class="text-xs text-green-600 hover:underline">
+            View
+          </button>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- 🪔 Product Description Modal -->
+<div id="descModal" class="hidden fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4">
+  <div class="bg-white rounded-lg p-6 max-w-sm w-full relative shadow-lg">
+    <button onclick="closeDescModal()"
+            class="absolute top-2 right-2 text-gray-600 text-xl font-bold hover:text-red-500">×</button>
+    <img id="descImg" src="" class="w-full h-48 object-cover rounded mb-4" />
+    <h2 id="descTitle" class="text-xl font-semibold text-green-800 mb-2"></h2>
+    <p id="descText" class="text-sm text-gray-700 mb-3 leading-relaxed"></p>
+    <span id="descPrice" class="text-green-700 font-bold text-md"></span>
+  </div>
+</div>
+
+<!-- 🔍 Full Image Modal -->
+<div id="imageModal" class="hidden fixed inset-0 bg-black bg-opacity-95 z-50 flex items-center justify-center overflow-auto">
+  <button onclick="closeImageModal()" class="absolute top-4 right-4 text-white text-4xl font-bold z-50 hover:text-red-400 transition">&times;</button>
+  <img id="fullImage"
+       src=""
+       class="max-w-[90%] max-h-[90%] object-contain rounded-lg shadow-2xl transition-transform duration-300 hover:scale-105"
+       alt="Full Product Image">
+</div>
+
+<!-- 🧠 Scripts -->
+<script>
+  // 🔁 Hero Slider
+  const heroSlider = document.getElementById("heroSlider");
+  const heroDots = document.querySelectorAll(".hero-dot");
+  let currentSlide = 0;
+  const totalSlides = 5;
+
+  function updateHeroSlider(index) {
+    currentSlide = index;
+    heroSlider.style.transform = `translateX(-${index * 20}%)`;
+    heroDots.forEach((dot, i) => {
+      dot.classList.toggle("bg-green-500", i === index);
+      dot.classList.toggle("bg-white", i !== index);
+    });
+  }
+
+  function goToHeroSlide(index) {
+    updateHeroSlider(index);
+  }
+
+  function autoSlide() {
+    currentSlide = (currentSlide + 1) % totalSlides;
+    updateHeroSlider(currentSlide);
+  }
+
+  setInterval(autoSlide, 5000);
+  updateHeroSlider(currentSlide);
+
+  // 📦 Product Modal
+  function showDetails(name, description, price, img) {
+    document.getElementById("descTitle").textContent = name;
+    document.getElementById("descText").textContent = description;
+    document.getElementById("descPrice").textContent = "₹" + price;
+    document.getElementById("descImg").src = img;
+    document.getElementById("descModal").classList.remove("hidden");
+  }
+
+  function closeDescModal() {
+    document.getElementById("descModal").classList.add("hidden");
+  }
+
+  function showImageModal(imgUrl) {
+    document.getElementById('fullImage').src = imgUrl;
+    document.getElementById('imageModal').classList.remove('hidden');
+  }
+
+  function closeImageModal() {
+    document.getElementById('imageModal').classList.add('hidden');
+  }
+</script>
 {% endblock %}

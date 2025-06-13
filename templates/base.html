@@ -1,24 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Tulasi Naturals</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tulasi Naturals</title>
+  <link rel="icon" href="{{ url_for('static', filename='Logo.png') }}">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    ::selection { background-color: #a7f3d0; color: #065f46; }
+  </style>
 </head>
-<body class="bg-green-50 text-gray-800">
-    <nav class="bg-green-600 text-white px-6 py-4 flex justify-between items-center">
-        <div class="flex items-center space-x-4">
-            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="h-10 w-10 rounded-full bg-white p-1">
-            <h1 class="text-xl font-bold">Tulasi Naturals</h1>
-        </div>
-        <div class="space-x-4">
-            <a href="/" class="hover:underline">Home</a>
-            <a href="/products" class="hover:underline">Products</a>
-            <a href="/cart" class="hover:underline">Cart</a>
-        </div>
-    </nav>
-    <main class="p-6 max-w-7xl mx-auto">
-        {% block content %}{% endblock %}
-    </main>
+<body class="bg-green-50 text-gray-800 min-h-screen flex flex-col">
+
+  <!-- 🌿 Navbar -->
+  <nav class="bg-green-700 text-white px-6 py-4 shadow-md sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+      <a href="/" class="text-2xl font-bold tracking-wide flex items-center gap-2">
+        <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="w-8 h-8">
+        Tulasi Naturals
+      </a>
+      <div class="space-x-4 text-lg hidden md:flex">
+        <a href="/" class="hover:text-green-200 transition">Home</a>
+        <a href="/products" class="hover:text-green-200 transition">Products</a>
+        <a href="/cart" class="hover:text-green-200 transition">Cart </a>
+        
+      </div>
+      <div class="md:hidden">
+        <button onclick="document.getElementById('mobileMenu').classList.toggle('hidden')" class="focus:outline-none">
+          ☰
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 📱 Mobile Menu -->
+  <div id="mobileMenu" class="md:hidden hidden bg-green-600 text-white px-6 py-4 space-y-2">
+    <a href="/" class="block hover:text-green-200">Home</a>
+    <a href="/products" class="block hover:text-green-200">Products</a>
+    <a href="/cart" class="block hover:text-green-200">Cart 🛒</a>
+    <a href="/about" class="block hover:text-green-200">About</a>
+  </div>
+
+  <!-- 🔽 Main Content -->
+  <main class="flex-grow">
+    <div class="max-w-7xl mx-auto px-4 py-10">
+      {% block content %}{% endblock %}
+    </div>
+  </main>
+
+  <!-- ⚡ Footer -->
+
+
 </body>
 </html>
